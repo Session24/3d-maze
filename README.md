@@ -76,6 +76,8 @@ npm run build
 `dist/` в репозиторий не коммитится — Pages забирает артефакт workflow.
 Используется только официальный бесплатный хостинг GitHub Pages.
 
+**Сайт: https://session24.github.io/3d-maze/**
+
 ---
 
 ## Структура
