@@ -1,0 +1,18 @@
+# Зависимости и артефакты сборки
+node_modules/
+dist/
+
+# Секреты и локальные переменные окружения
+.env
+.env.*
+*.local
+
+# Логи
+*.log
+npm-debug.log*
+
+# Системные и редакторские файлы
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

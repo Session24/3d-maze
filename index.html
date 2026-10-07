@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="3D Maze — интерактивный визуализатор реальной генерации лабиринта (Randomized DFS) и поиска пути (BFS) в 3D." />
+    <meta name="color-scheme" content="dark" />
+    <title>3D Maze — визуализатор лабиринтов</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070a12'/%3E%3Cpath d='M6 6h8v4H10v4h6v4h-4v8H6z' fill='%2322d3ee'/%3E%3Cpath d='M20 6h6v20h-6v-6h2v-4h-4V6z' fill='%23a78bfa'/%3E%3C/svg%3E" />
+</head>
+<body>
+    <div id="app">
+        <!-- 3D-сцена занимает основную площадь экрана -->
+        <main id="viewport" aria-label="3D сцена лабиринта">
+            <div class="scene-hint" id="sceneHint">
+                <span class="scene-hint__title">Нажмите «Сгенерировать», чтобы построить лабиринт</span>
+                <span class="scene-hint__sub">Размер, скорость и управление — в панели</span>
+            </div>
+        </main>
+
+        <!-- Панель управления -->
+        <aside class="panel" id="panel">
+            <header class="panel-header">
+                <div class="brand">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" width="26" height="26">
+                            <path d="M5 5h9v4h-5v4h6v4h-4v10H5z" fill="currentColor" opacity=".95"/>
+                            <path d="M19 5h8v22h-6v-6h-4v-4h3V9h-1z" fill="currentColor" opacity=".55"/>
+                        </svg>
+                    </span>
+                    <span class="brand-text">
+                        <strong>3D&nbsp;MAZE</strong>
+                        <small>визуализатор лабиринтов</small>
+                    </span>
+                </div>
+                <div class="state-chip" id="stateChip" data-state="idle">Готов</div>
+            </header>
+
+            <section class="block">
+                <h2 class="block-title">Размер лабиринта</h2>
+                <div class="size-grid" id="sizeGrid" role="radiogroup" aria-label="Размер лабиринта"></div>
+            </section>
+
+            <section class="block">
+                <h2 class="block-title">Алгоритмы</h2>
+                <div class="algo-row">
+                    <span class="algo-key">Генерация</span>
+                    <span class="algo-val" id="algoGen">Случайный DFS</span>
+                </div>
+                <div class="algo-row">
+                    <span class="algo-key">Поиск</span>
+                    <span class="algo-val" id="algoSearch">Поиск в ширину (BFS)</span>
+                </div>
+                <button class="btn btn-primary btn-block" id="btnGenerate" type="button">Сгенерировать</button>
+                <button class="btn btn-accent btn-block" id="btnFind" type="button" disabled>Найти путь</button>
+            </section>
+
+            <section class="block">
+                <h2 class="block-title">Управление</h2>
+                <div class="btn-grid">
+                    <button class="btn" id="btnPause" type="button" disabled>Пауза</button>
+                    <button class="btn" id="btnResume" type="button" disabled>Продолжить</button>
+                    <button class="btn" id="btnStep" type="button" disabled>Следующий шаг</button>
+                    <button class="btn btn-danger" id="btnReset" type="button" disabled>Сбросить</button>
+                </div>
+
+                <div class="speed">
+                    <div class="speed-head">
+                        <span>Скорость</span>
+                        <span class="speed-value" id="speedValue">1×</span>
+                    </div>
+                    <input class="speed-slider" id="speedSlider" type="range" min="0" max="4" step="1" value="1" aria-label="Скорость визуализации" />
+                    <div class="speed-ticks" id="speedTicks"></div>
+                </div>
+
+                <button class="btn btn-ghost btn-block" id="btnCamera" type="button">Сбросить камеру</button>
+            </section>
+
+            <section class="block">
+                <h2 class="block-title">Статистика</h2>
+                <div class="progress" id="progressWrap" hidden>
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <dl class="stats" id="stats"></dl>
+            </section>
+
+            <section class="block legend">
+                <h2 class="block-title">Легенда</h2>
+                <ul>
+                    <li><i style="--c:#00d4ff"></i> цепочка генерации</li>
+                    <li><i style="--c:#24507e"></i> посещённые клетки</li>
+                    <li><i style="--c:#d9fbff"></i> текущая клетка</li>
+                    <li><i style="--c:#4b3f8f"></i><i style="--c:#9b7bff"></i> исследование BFS</li>
+                    <li><i style="--c:#39ff88"></i> итоговый путь</li>
+                    <li><i class="dot-start"></i> старт <i class="dot-finish"></i> финиш</li>
+                </ul>
+            </section>
+
+            <footer class="panel-footer">
+                <span>ЛКМ — вращение · колесо — масштаб · ПКМ — панорама</span>
+            </footer>
+        </aside>
+
+        <button class="panel-toggle" id="panelToggle" type="button" aria-label="Открыть панель">☰</button>
+    </div>
+
+    <noscript>
+        <p style="padding:2rem;color:#fff">Для работы 3D Maze нужен включённый JavaScript.</p>
+    </noscript>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
